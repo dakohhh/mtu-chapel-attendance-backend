@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Upload File</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <link rel='stylesheet' href="{{ url_for('static', filename='bootstrap.min3.3.5.css') }}">
+  <!--<link rel='stylesheet' href='bootstrap.min3.3.5.css'>-->
+  <style type="text/css">
+    @font-face {
+      font-family: Poppins;
+      src: url(Poppins.ttf);
+    }
+
+        body{
+            font-family: Poppins;
+        }
+
+        .center{
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
+    .center1{
+            margin: auto;
+            width: 100%;
+            padding: 10px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+<!-- partial:index.partial.html -->
+<div ng-app="app">
+  <div ng-controller="UploadController as vm">
+    <div class="container">
+      <div class="page-header">
+        <h1>Welcome, Admin</h1>
+      </div>
+
+      <div class="alert alert-info">
+        Upload the csv file for the level selected below
+      </div>
+	  {% if get_flashed_messages()[0] == "invalid-upload" %}
+		<div class="alert alert-warning">
+			Invalid Upload
+		</div>
+	  {% elif get_flashed_messages()[0] == "invalid_filetype" %}
+	  	<div class="alert alert-warning">
+			Invalid file type.
+		</div>
+	  {% endif %}
+      <form action="#" method="post" ng-model="vm.file" my-file-upload enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fileName">Select a file</label>
+          <div class="input-group">
+            <input type="file" id="fileName" class="form-control" name="csv_file" readonly required>
+            <span class="input-group-btn">
+              <button type="file" class="btn btn-default">Browse</button>
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <button type="reset" class="btn btn-default" ng-click="reset()">Reset</button>
+          <input type="submit" class="btn btn-primary">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

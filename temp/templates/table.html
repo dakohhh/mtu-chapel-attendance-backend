@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Absentees</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min3.3.5.css') }}">
+
+  <style type="text/css">
+    @font-face {
+      font-family: Poppins;
+      src: url(Poppins.ttf);
+    }
+
+    body{
+      font-family: Poppins;
+    }
+
+    .center{
+      margin: auto;
+      width: 50%;
+      padding: 10px;
+    }
+    .center1{
+      margin: auto;
+	  top: 50;
+	  left: 50;
+    }
+
+  </style>
+</head>
+	<body>
+		<div class="container">
+			<br>
+			<br>
+			<h1 style="text-align: center;"><strong>400 LEVEL ABSENTEES</strong></h1>
+			<br>
+			<br>
+			<br>
+			<h5 style="text-align: center;"></h5>
+			<br>
+			<br>
+
+
+			<table class="table table-striped center container">
+				<thead>
+				<tr>
+					<th scope="col">Id</th>
+					<th scope="col">Last Name</th>
+					<th scope="col">Other names</th>
+					<th scope="col">Matric</th>
+					<th scope="col">Level</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% if abse == None %}
+					<h3 style="text-align: center;">No Result</h5>
+					<br>
+				{% else %}
+					{% for i in range(0, lene) %}
+						<tr>
+							<th scope="row">{{ i+1 }}</th>
+							<td>{{ abse[i][0] }}</td>
+							<td>{{ abse[i][1] }}</td>
+							<td>{{ abse[i][2] }}</td>
+							<td>{{ abse[i][3] }}</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+				</tbody>
+			</table>
+			
+		</div>
+		<br>
+		<button id="print-btn" class="btn btn-success center1" style="position: relative;" ng-click="reset()">Print</button>
+	</body>
+
+<script>
+	let print_btn = document.getElementById("print-btn").addEventListener("click", ()=>{
+		print();
+	})
+	
+</script>
+</html>
