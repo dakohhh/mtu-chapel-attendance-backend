@@ -56,7 +56,7 @@ async def creat_test_students(request: Request):
             lastname=row["LastName"],
             matric_no=row["MatricNumber"],
             level=row["Level"],
-            departmant=random.randint(1, 11),
+            department=random.randint(1, 11),
             chapel_seat_number=random.randint(1, 35),
             chapel_group_number=random.randint(1, 8),
         )

@@ -33,7 +33,7 @@ class Student(Document):
     lastname = StringField(required=True)
     matric_no = IntField()
     level = IntField()
-    departmant = IntField(choices=DEPARTMENT_CHOICES)
+    department = IntField(choices=DEPARTMENT_CHOICES)
 
     academic_session: AcademicSession = ReferenceField(
         AcademicSession, default=None, reverse_delete_rule=CASCADE
@@ -51,8 +51,8 @@ class Student(Document):
             "firstname": self.firstname,
             "matric_no": self.matric_no,
             "level": self.level,
-            "academic_session": self.academic_session.session,
-            "departmant": self.departmant,
+            "academic_session": self.academic_session.session if self.academic_session else None,
+            "department": self.department,
             "chapel_group_number": self.chapel_group_number,
             "chapel_seat_number": self.chapel_seat_number,
         }
