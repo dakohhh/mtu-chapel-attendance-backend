@@ -1,4 +1,5 @@
 import random
+from bson import ObjectId
 from settings import settings
 from mongoengine import connect
 from middleware.processes import handleMiddlewareProcesses
@@ -34,7 +35,7 @@ addExceptionHandlers(app)
 
 
 import pandas as pd
-from database.schema import Student
+from database.schema import Student,AcademicSession
 
 
 @app.post("/test")
@@ -64,3 +65,23 @@ async def creat_test_students(request: Request):
         student.save()
 
     return True
+
+
+
+
+
+@app.post("/apply")
+async def apply_acdemic_session_students(request: Request):
+
+
+    academic_session_ = AcademicSession.objects(id=ObjectId("661bf99480564d2bf479ccac")).first()
+
+    students = Student.objects()
+
+    for student in students:
+        student.academic_session = academic_session_
+
+        student.save()
+
+    return True
+

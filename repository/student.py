@@ -14,6 +14,7 @@ class StudentRepository:
             level=student.level,
             department=student.department,
             chapel_seat_number=student.chapel_seat_number,
+            academic_session=student.academic_session,
             chapel_group_number=student.chapel_group_number,
         )
 
@@ -57,9 +58,13 @@ class StudentRepository:
         return query
     
 
-
     @staticmethod
     async def get_total_student_count_by_level(level) -> int:
         query = Student.objects(level=level).count()
 
         return query
+    
+
+    @staticmethod
+    async def remove_student():
+        return
