@@ -1,5 +1,14 @@
-from mongoengine import Document, StringField, IntField, ReferenceField, CASCADE
+from mongoengine import (
+    Document,
+    StringField,
+    IntField,
+    ReferenceField,
+    CASCADE,
+    DateTimeField,
+)
 from .choices import DEPARTMENT_CHOICES
+from utils.date import get_current_datetime
+from datetime import datetime
 
 
 class Users(Document):
@@ -8,22 +17,22 @@ class Users(Document):
     email = StringField(required=True)
     password = StringField()
 
-
     def to_dict(self):
         return {
             "id": str(self.id),
             "firstname": self.firstname,
             "lastname": self.lastname,
-            "email": self.email
+            "email": self.email,
         }
 
 
 class AcademicSession(Document):
     session = StringField(default="2023/2024")
+    semester = StringField(default="First")
 
     def to_dict(self):
 
-        return {"session": self.session}
+        return {"id": str(self.id), "session": self.session, "semester": self.semester}
 
 
 class Student(Document):
@@ -43,15 +52,22 @@ class Student(Document):
 
     chapel_group_number = IntField(required=True)
 
+    created_at = DateTimeField(default=datetime.now)
+
+    updated_at = DateTimeField(default=datetime.now)
+
     meta = {"strict": False}
 
     def to_dict(self):
         return {
             "id": str(self.id),
             "firstname": self.firstname,
+            "lastname": self.lastname,
             "matric_no": self.matric_no,
             "level": self.level,
-            "academic_session": self.academic_session.session if self.academic_session else None,
+            "academic_session": (
+                self.academic_session.session if self.academic_session else None
+            ),
             "department": self.department,
             "chapel_group_number": self.chapel_group_number,
             "chapel_seat_number": self.chapel_seat_number,

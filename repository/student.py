@@ -37,8 +37,29 @@ class StudentRepository:
 
 
     @staticmethod
-    async def get_all_students() -> List[Student]:
+    async def get_all_students(offset, per_page, level:int=None) -> List[Student]:
 
-        query = Student.objects()
+        if level:
+            query = Student.objects(level=level).order_by("+firstname").skip(offset).limit(per_page)
+
+        else:
+
+            query = Student.objects().order_by("+firstname").skip(offset).limit(per_page)
+
+        return query
+    
+
+
+    @staticmethod
+    async def get_total_student_count() -> int:
+        query = Student.objects().count()
+
+        return query
+    
+
+
+    @staticmethod
+    async def get_total_student_count_by_level(level) -> int:
+        query = Student.objects(level=level).count()
 
         return query
