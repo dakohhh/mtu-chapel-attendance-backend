@@ -29,7 +29,7 @@ class StudentRepository:
         return query
 
     @staticmethod
-    async def get_user_by_id(user_id: PydanticObjectId) -> Student:
+    async def get_student_by_id(user_id: PydanticObjectId) -> Student:
 
         query = Student.objects(id=user_id).first()
 
@@ -46,6 +46,14 @@ class StudentRepository:
         else:
 
             query = Student.objects().order_by("+firstname").skip(offset).limit(per_page)
+
+        return query
+    
+
+    @staticmethod
+    async def get_all_student_by_level_only(level:int) -> List[Student]:
+
+        query =  Student.objects(level=level)
 
         return query
     

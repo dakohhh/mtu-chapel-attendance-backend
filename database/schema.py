@@ -72,3 +72,8 @@ class Student(Document):
             "chapel_group_number": self.chapel_group_number,
             "chapel_seat_number": self.chapel_seat_number,
         }
+    
+
+    @property
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"

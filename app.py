@@ -9,6 +9,7 @@ from router.academic_session import router as academic_session
 from router.auth import router as auth
 from router.user import router as user
 from router.students import router as student
+from router.attendance import router as attendance
 
 
 connect(
@@ -29,6 +30,7 @@ app.include_router(auth)
 app.include_router(user)
 app.include_router(student)
 app.include_router(academic_session)
+app.include_router(attendance)
 
 
 addExceptionHandlers(app)
