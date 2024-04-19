@@ -23,8 +23,8 @@ async def get_absentees(
 
     absentees = []
 
-    students = await StudentRepository.get_all_student_by_level_only(
-        generate_absentees.level
+    students = await StudentRepository.get_all_student_by_level_and_session(
+        generate_absentees.level, generate_absentees.academic_session
     )
 
     log_data = pd.read_csv(generate_absentees.log_file.file)
@@ -35,22 +35,23 @@ async def get_absentees(
         if student.matric_no not in log_matric_no_list:
             absentees.append(student.to_dict())
 
-    context = {"absentees": absentees}
+    context = {"absentees": absentees, "title": generate_absentees.title}
 
-    return CustomResponse("get absentees for", data=context)
+    return CustomResponse(f"get absentees for {generate_absentees.title}", data=context)
 
 
 @router.get("/warning_letter")
 async def get_warning_letters(
     request: Request,
     student_id: PydanticObjectId,
+    title: str,
     user: Users = Depends(auth.get_current_user),
 ):
 
     student = await StudentRepository.get_student_by_id(student_id)
 
     warning_letter = WarningLetter(
-        student.fullname, str(student.matric_no), "ABSENCE FROM CHAPEL"
+        student.fullname, str(student.matric_no), "ABSENCE FROM CHAPEL", title
     ).create_warning_letter()
 
     buffer = BytesIO()

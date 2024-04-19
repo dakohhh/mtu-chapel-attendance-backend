@@ -58,6 +58,14 @@ class StudentRepository:
         return query
     
 
+    @staticmethod
+    async def get_all_student_by_level_and_session(level:int, academic_session:PydanticObjectId) -> List[Student]:
+
+        query =  Student.objects(level=level, academic_session=academic_session)
+
+        return query
+    
+
 
     @staticmethod
     async def get_total_student_count() -> int:

@@ -33,6 +33,10 @@ class AcademicSession(Document):
     def to_dict(self):
 
         return {"id": str(self.id), "session": self.session, "semester": self.semester}
+    
+    @property
+    def format_session(self):
+        return f"{self.session} {self.semester} Semester"
 
 
 class Student(Document):
@@ -66,7 +70,7 @@ class Student(Document):
             "matric_no": self.matric_no,
             "level": self.level,
             "academic_session": (
-                self.academic_session.session if self.academic_session else None
+                self.academic_session.format_session if self.academic_session else None
             ),
             "department": self.department,
             "chapel_group_number": self.chapel_group_number,

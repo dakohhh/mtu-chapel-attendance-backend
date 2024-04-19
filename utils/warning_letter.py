@@ -4,11 +4,12 @@ from docx.shared import Inches
 
 
 class WarningLetter():
-    def __init__(self, student_name:str, matric_no:str, reason:str) -> None:
+    def __init__(self, student_name:str, matric_no:str, reason:str, title:str) -> None:
 
         self.student_name= student_name
         self.matric_no = matric_no
         self.reason = reason
+        self.title = title
 
     def create_warning_letter(self):
         # Create a new Document
@@ -28,6 +29,8 @@ class WarningLetter():
         p.add_run(str(self.matric_no)).bold = True
         p.add_run(" that he/she has been issued a warning letter for the reason ")
         p.add_run(self.reason).bold = True
+        p.add_run(" for ")
+        p.add_run(self.title).bold = True
         p.add_run(", and is hereby officially warned.")
 
         return doc
