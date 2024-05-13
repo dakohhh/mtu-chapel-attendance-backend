@@ -69,9 +69,12 @@ class Student(Document):
             "lastname": self.lastname,
             "matric_no": self.matric_no,
             "level": self.level,
-            "academic_session": (
-                self.academic_session.format_session if self.academic_session else None
-            ),
+            "academic_session": {
+                "academic_session_id": str(self.academic_session.id),
+                "session": self.academic_session.session,
+                "semester": self.academic_session.semester,
+                "format": self.academic_session.format_session if self.academic_session else None
+            },
             "department": self.department,
             "chapel_group_number": self.chapel_group_number,
             "chapel_seat_number": self.chapel_seat_number,
