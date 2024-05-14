@@ -83,8 +83,11 @@ class StudentRepository:
     
 
     @staticmethod
-    async def remove_student():
-        return
+    async def remove_student(student:Student) -> Student:
+
+        student.delete()
+
+        return student  
     
 
 

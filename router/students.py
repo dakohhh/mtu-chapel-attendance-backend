@@ -109,7 +109,7 @@ async def create_student(
 
     context = {"student": new_student.to_dict()}
 
-    return CustomResponse("created student successfully", data=context)
+    return CustomResponse("created student successfully", data=context, status=status.HTTP_201_CREATED)
 
 
 @router.patch("/{student_id}")
@@ -141,3 +141,18 @@ async def update_student(
     context = {"student": student.to_dict()}
 
     return CustomResponse("updated student successfully", data=context)
+
+
+
+
+@router.delete("/{student_id}")
+async def delete_student(request: Request, student_id: PydanticObjectId, user: Users = Depends(auth.get_current_user)):
+
+    student = await StudentRepository.get_student_by_id(student_id)
+
+    if student is None:
+        raise NotFoundException("student does not exist")
+
+    await StudentRepository.remove_student(student)
+
+    return CustomResponse("student deleted successfully")
