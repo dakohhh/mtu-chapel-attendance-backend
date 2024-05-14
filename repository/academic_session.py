@@ -18,6 +18,14 @@ class AcademicSessionRepository:
     
 
     @staticmethod
+    async def get_academic_session_by_id(academic_session_id: PydanticObjectId):
+
+        query = AcademicSession.objects(id=academic_session_id).first()
+
+        return query
+    
+
+    @staticmethod
     async def get_all_academic_session():
 
         pipeline = [

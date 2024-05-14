@@ -1,7 +1,8 @@
+import bson
 from database.schema import Student
-from validation import CreateStudent
+from validation import CreateStudent, UpdateStudent
 from beanie import PydanticObjectId
-from typing import List
+from typing import List, Union
 
 class StudentRepository:
     @staticmethod
@@ -29,7 +30,7 @@ class StudentRepository:
         return query
 
     @staticmethod
-    async def get_student_by_id(user_id: PydanticObjectId) -> Student:
+    async def get_student_by_id(user_id: PydanticObjectId) -> Union[Student, None]:
 
         query = Student.objects(id=user_id).first()
 
@@ -84,3 +85,40 @@ class StudentRepository:
     @staticmethod
     async def remove_student():
         return
+    
+
+
+    @staticmethod
+    async def update_student(student:Student, param: UpdateStudent) -> Student:
+
+        if param.firstname:
+            student.firstname = param.firstname
+        
+        if param.othername:
+            student.othername = param.othername
+
+        if param.lastname:
+            student.lastname = param.lastname
+
+        if param.matric_no:
+            student.matric_no = param.matric_no
+
+        if  param.level:
+            student.level = param.level
+
+        if param.department:
+            student.department = param.department
+
+        if param.academic_session: 
+            student.academic_session = param.academic_session
+
+        if param.chapel_group_number:
+            student.chapel_group_number = param.chapel_group_number
+
+        if param.chapel_seat_number:
+            student.chapel_seat_number = param.chapel_seat_number
+
+
+        student.save()
+
+        return student

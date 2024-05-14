@@ -5,13 +5,16 @@ from fastapi import (
     APIRouter,
     status,
 )
-from exceptions import BadRequestException
+from exceptions import BadRequestException, NotFoundException
 from database.schema import Users
+from repository import AcademicSessionRepository
 from repository.user import UsersRepository
 
 from authentication.auth import auth
 
-from validation import CreateStudent
+from beanie import PydanticObjectId
+
+from validation import CreateStudent, UpdateStudent
 from client.response import CustomResponse
 from repository.student import StudentRepository
 from typing import Optional
@@ -19,7 +22,7 @@ from typing import Optional
 router = APIRouter(tags=["Student"], prefix="/student")
 
 
-@router.get("/all")
+@router.get("/")
 async def get_all_students(
     request: Request,
     page: int,
@@ -60,7 +63,24 @@ async def get_all_students(
     return CustomResponse("get students successfully", data=context)
 
 
-@router.get("/{matric_no}")
+@router.get("/id/{student_id}")
+async def get_student(
+    request: Request,
+    student_id: PydanticObjectId,
+    user: Users = Depends(auth.get_current_user),
+):
+    student = await StudentRepository.get_student_by_id(student_id)
+
+    if student is None:
+
+        raise NotFoundException("student does not exist")
+
+    context = {"student": student.to_dict()}
+
+    return CustomResponse("get student successfully", data=context)
+
+
+@router.get("/matric/{matric_no}")
 async def get_student(
     request: Request,
     matric_no: int,
@@ -69,12 +89,16 @@ async def get_student(
 
     student = await StudentRepository.get_student_by_matric_no(matric_no)
 
+    if student is None:
+
+        raise NotFoundException("student does not exist")
+
     context = {"student": student.to_dict()}
 
     return CustomResponse("get student successfully", data=context)
 
 
-@router.post("/create")
+@router.post("/")
 async def create_student(
     request: Request,
     student: CreateStudent,
@@ -86,3 +110,34 @@ async def create_student(
     context = {"student": new_student.to_dict()}
 
     return CustomResponse("created student successfully", data=context)
+
+
+@router.patch("/{student_id}")
+async def update_student(
+    request: Request,
+    student_id: PydanticObjectId,
+    update_student_param: UpdateStudent,
+    user: Users = Depends(auth.get_current_user),
+):
+    
+    print(update_student_param)
+
+    student = await StudentRepository.get_student_by_id(student_id)
+
+    if student is None:
+        raise NotFoundException("student does not exist")
+    
+
+    if update_student_param.academic_session:
+        academic_session = await AcademicSessionRepository.get_academic_session_by_id(update_student_param.academic_session)
+
+        if not academic_session:
+            raise BadRequestException("academic session does not exist")
+
+        update_student_param.academic_session = academic_session
+
+    student = await StudentRepository.update_student(student, update_student_param)
+
+    context = {"student": student.to_dict()}
+
+    return CustomResponse("updated student successfully", data=context)
