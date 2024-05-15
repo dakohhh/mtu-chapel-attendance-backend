@@ -50,6 +50,9 @@ async def get_warning_letters(
 
     student = await StudentRepository.get_student_by_id(student_id)
 
+    if student is None:
+        return CustomResponse("student not found", status_code=status.HTTP_404_NOT_FOUND)
+
     warning_letter = WarningLetter(
         student.fullname, str(student.matric_no), "ABSENCE FROM CHAPEL", title
     ).create_warning_letter()

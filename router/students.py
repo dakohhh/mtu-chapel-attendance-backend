@@ -147,7 +147,6 @@ async def update_student(
 
 @router.delete("/{student_id}")
 async def delete_student(request: Request, student_id: PydanticObjectId, user: Users = Depends(auth.get_current_user)):
-
     student = await StudentRepository.get_student_by_id(student_id)
 
     if student is None:
