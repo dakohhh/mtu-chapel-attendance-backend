@@ -39,14 +39,14 @@ class StudentRepository:
 
 
     @staticmethod
-    async def get_all_students(offset, per_page, level:int=None) -> List[Student]:
+    async def get_all_students(level:int=None) -> List[Student]:
 
         if level:
-            query = Student.objects(level=level).order_by("-created_at").skip(offset).limit(per_page)
+            query = Student.objects(level=level).order_by("-created_at")
 
         else:
 
-            query = Student.objects().order_by("-created_at").skip(offset).limit(per_page)
+            query = Student.objects().order_by("-created_at")
 
         return query
     
