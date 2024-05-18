@@ -155,3 +155,12 @@ async def delete_student(request: Request, student_id: PydanticObjectId, user: U
     await StudentRepository.remove_student(student)
 
     return CustomResponse("student deleted successfully")
+
+
+@router.delete("/")
+async def delete_all_students(request: Request, user: Users = Depends(auth.get_current_user)):
+
+    await StudentRepository.remove_all_students()
+
+    return CustomResponse("all students deleted successfully")
+

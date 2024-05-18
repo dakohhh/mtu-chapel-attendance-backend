@@ -87,7 +87,14 @@ class StudentRepository:
 
         student.delete()
 
-        return student  
+        return student
+    
+    @staticmethod
+    async def remove_all_students():
+
+        query = Student.objects().delete()
+
+        return query
     
 
 
