@@ -97,8 +97,6 @@ async def update_student(
     user: Users = Depends(auth.get_current_user),
 ):
 
-    print(update_student_param)
-
     student = await StudentRepository.get_student_by_id(student_id)
 
     if student is None:
