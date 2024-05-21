@@ -33,7 +33,11 @@ async def get_absentees(
 
     for student in students:
         if student.matric_no not in log_matric_no_list:
-            absentees.append(student.to_dict())
+
+            student_dict = student.to_dict()
+
+            student_dict["title_of_service"] = generate_absentees.title
+            absentees.append(student_dict)
 
     context = {"absentees": absentees, "title": generate_absentees.title}
 
