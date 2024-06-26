@@ -42,15 +42,17 @@ class AcademicSession(Document):
 class Student(Document):
 
     firstname = StringField(required=True)
-    othername = StringField(null=True, required=False)
+    othername = StringField(null=True, required=False, default=None)
     lastname = StringField(required=True)
-    matric_no = IntField()
+    matric_no = IntField(required=False, unique=True)
     level = IntField()
     department = IntField(choices=DEPARTMENT_CHOICES)
 
     academic_session: AcademicSession = ReferenceField(
-        AcademicSession, default=None, reverse_delete_rule=CASCADE
+        AcademicSession, default=None, reverse_delete_rule=CASCADE, required=True
     )
+    
+    gender = IntField(required=False)
 
     chapel_seat_number = IntField(required=True)
 
@@ -62,11 +64,19 @@ class Student(Document):
 
     meta = {"strict": False}
 
+
+    @property
+    def resolve_gender(self):
+        if self.gender == 1:
+            return "F"
+        return "M"
+
     def to_dict(self):
         return {
             "id": str(self.id),
             "firstname": self.firstname,
             "lastname": self.lastname,
+            "gender": self.resolve_gender,
             "matric_no": self.matric_no,
             "level": self.level,
             "academic_session": {

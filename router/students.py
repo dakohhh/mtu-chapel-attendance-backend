@@ -79,6 +79,10 @@ async def create_student(
     student: CreateStudent,
     user: Users = Depends(auth.get_current_user),
 ):
+    
+    if await StudentRepository.does_matric_exist(student.matric_no):
+        raise BadRequestException(f"matric number {student.matric_no} already exists")
+
 
     new_student = await StudentRepository.create_student(student)
 

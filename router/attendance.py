@@ -31,6 +31,7 @@ async def get_absentees(
 
     log_matric_no_list = log_data["ImageName"].to_list()
 
+
     for student in students:
         if student.matric_no not in log_matric_no_list:
 

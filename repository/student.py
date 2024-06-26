@@ -132,3 +132,10 @@ class StudentRepository:
         student.save()
 
         return student
+    
+    @staticmethod
+    async def does_matric_exist(matric_no:int) -> bool:
+        
+        query = Student.objects(matric_no=matric_no).first()
+
+        return query is not None
